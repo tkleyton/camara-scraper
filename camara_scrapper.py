@@ -16,11 +16,11 @@ def main():
     links = list()
 
     for page_number in range(1, 408):
-    site_data = requests.get(base_url.format(page_number=1))
-    soup = BeautifulSoup(site_data.content)
-    link_tags = soup.find_all('a', href=re.compile('TextoHTML'))
-    for tag in link_tags:
-        links.append(re.sub(r"\s", "", tag['href']))
+        site_data = requests.get(base_url.format(page_number=1))
+        soup = BeautifulSoup(site_data.content)
+        link_tags = soup.find_all('a', href=re.compile('TextoHTML'))
+        for tag in link_tags:
+            links.append(re.sub(r"\s", "", tag['href']))
 
     for link in links:
         link_data = requests.get(base_link+link)
