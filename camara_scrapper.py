@@ -23,11 +23,10 @@ def main():
         links.append(re.sub(r"\s", "", tag['href']))
 
     for link in links:
-    link_data = requests.get(base_link+link)
-    link_soup = BeautifulSoup(link_data.content)
-    content = link_soup.find('div', id='content')
-    process(content)
+        link_data = requests.get(base_link+link)
+        link_soup = BeautifulSoup(link_data.content)
+        content = link_soup.find('div', id='content')
+        process(content)
 
 if __name__ == '__main__':
     main()
-
