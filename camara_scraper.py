@@ -35,7 +35,7 @@ def main():
     # No total são 20350 resultados com 50 resultados por página, logo, 407 páginas.
     # TODO obter automaticamente o número de páginas
     # ou ir avançando as páginas até não encontrar mais.
-    for page_number in range(1, 4):
+    for page_number in range(1, 408):
         # Para cada página, adiciona os links dos discursos em `links`
         print(f'Obtendo links: página {page_number}', end='\r')
         site_data = requests.get(base_url.format(page_number=page_number))
