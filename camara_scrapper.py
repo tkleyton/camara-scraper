@@ -21,12 +21,12 @@ def main():
         link_tags = soup.find_all('a', href=re.compile('TextoHTML'))
         for tag in link_tags:
             links.append(re.sub(r"\s", "", tag['href']))
-
-        for link in links:
-            link_data = requests.get(base_link+link)
-            link_soup = BeautifulSoup(link_data.content)
-            content = link_soup.find('div', id='content')
-            process(content)
+            
+    for link in links:
+        link_data = requests.get(base_link+link)
+        link_soup = BeautifulSoup(link_data.content)
+        content = link_soup.find('div', id='content')
+        process(content)
             
 if __name__ == '__main__':
     main()
