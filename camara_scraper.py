@@ -10,7 +10,7 @@ from datetime import datetime
 
 def process(df, content):
     data_pattern = re.compile('[\w]+: ([\w]+)')
-    hora, data = [tag.get_text().strip() for tag in contents[0].find_all('td') if re.match(data_pattern, tag.get_text())]
+    hora, data = [tag.get_text().strip() for tag in content.find_all('td') if re.match(data_pattern, tag.get_text())]
     hora = data_pattern.search(hora).group(1)
     data = data_pattern.search(data).group(1)
     full_date = datetime.strptime(' '.join([data, hora]), '%d/%m/%Y %Hh%M')
