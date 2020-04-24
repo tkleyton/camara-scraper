@@ -9,9 +9,10 @@ from datetime import datetime
 
 
 def process(df, content):
-    data_pattern = re.compile('[\w]+: ([\w]+)')
+    data_pattern = re.compile('[\w]+: ([\w/]+)')
+    hora_pattern = re.compile('\d\dh\d\d?')
     hora, data = [tag.get_text().strip() for tag in content.find_all('td') if re.match(data_pattern, tag.get_text())]
-    hora = data_pattern.search(hora).group(1)
+    hora = hora_pattern.search(hora).group(0)
     data = data_pattern.search(data).group(1)
     full_date = datetime.strptime(' '.join([data, hora]), '%d/%m/%Y %Hh%M')
     new_content = {'Sumário': content.find('div', id='txSumarioID').get_text(),
@@ -27,23 +28,27 @@ def main():
     base_link = 'https://www.camara.leg.br/internet/sitaqweb/'
     links = list()
     df = pd.DataFrame({'Sumário': [], 'Discurso': []})
-    
+
     for page_number in range(1, 408):
+        print(f'Obtendo links: página {page_number}', end='\r')
         site_data = requests.get(base_url.format(page_number=page_number))
         soup = BeautifulSoup(site_data.content, 'html.parser')
         link_tags = soup.find_all('a', href=re.compile('TextoHTML'))
         for tag in link_tags:
             links.append(re.sub(r"\s", "", tag['href']))
-            
-    for link in links:
+
+    n_links = len(links)
+    print(f'Encontrados {n_links} links.')
+    print('Extraindo discursos...')
+    for n, link in enumerate(links):
         link_data = requests.get(base_link+link)
         link_soup = BeautifulSoup(link_data.content, 'html.parser')
         content = link_soup.find('div', id='content')
         df = process(df, content)
-        
+        print(f'{n} discursos de {n_links} extraídos.', end='\r')
+
     return df
-            
+
 if __name__ == '__main__':
     df = main()
     df.to_csv('camara.csv')
-
