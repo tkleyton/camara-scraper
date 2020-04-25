@@ -63,5 +63,5 @@ def main():
 
 if __name__ == '__main__':
     df = main()
-    df.to_csv('camara.csv')
+    df.to_csv('camara.csv', index=False)
 
