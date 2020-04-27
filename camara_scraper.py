@@ -20,6 +20,8 @@ def process(df, content):
                   'Discurso': content.find('p').get_text(),
                   'Sessão': re.search(re.compile("Sessão: ([\w.]+)"),
                       content.find('td', text=re.compile('Sessão:')).get_text().strip()).group(1),
+                   'Fase': re.search(re.compile("Fase: ([\w.]+)"),
+                      content.find('td', text=re.compile('Fase:')).get_text().strip()).group(1),
                   'Data': full_date}
     
     df = df.append(new_content, ignore_index=True)
@@ -30,7 +32,7 @@ def main():
     base_url = 'https://www.camara.leg.br/internet/sitaqweb/resultadoPesquisaDiscursos.asp?txIndexacao=&CurrentPage={page_number}&BasePesq=plenario&txOrador=&txPartido=&dtInicio=01/01/2019&dtFim=31/12/2019&txUF=&txSessao=&listaTipoSessao=&listaTipoInterv=&inFalaPres=&listaTipoFala=&listaFaseSessao=&txAparteante=&listaEtapa=&CampoOrdenacao=dtSessao&TipoOrdenacao=DESC&PageSize=50&txTexto=&txSumario='
     base_link = 'https://www.camara.leg.br/internet/sitaqweb/'
     links = list()
-    df = pd.DataFrame({'Sumário': [], 'Discurso': [], 'Sessão': [], 'Data': []})
+    df = pd.DataFrame({'Sumário': [], 'Discurso': [], 'Sessão': [], 'Fase': [], 'Data': []})
 
     # No total são 20350 resultados com 50 resultados por página, logo, 407 páginas.
     # TODO obter automaticamente o número de páginas
