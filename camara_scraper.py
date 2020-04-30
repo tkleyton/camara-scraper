@@ -57,8 +57,9 @@ def main():
         link_data = requests.get(base_link+link)
         link_soup = BeautifulSoup(link_data.content, 'html.parser')
         content = link_soup.find('div', id='content')
-        df = process(df, content)
-        print(f'{n+1} discursos de {n_links} extraídos.', end='\r')
+        if content:
+            df = process(df, content)
+        print(f'{n+1} de {n_links} processados.', end='\r')
     print()
 
     return df
